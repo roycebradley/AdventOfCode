@@ -52,7 +52,7 @@ class Day1
         int timesToTurnDial;
 
         //Read in input and convert to a string array with no control characters
-        string path = "./input.txt"; 
+        string path = "./Day1/input.txt"; 
         string[] inputArray = File.ReadAllLines(path);
         
         for(int i = 0; i < inputArray.Length; i++)
@@ -76,7 +76,7 @@ class Day1
         int timesToTurnDial;
 
         //Read in input and convert to a string array with no control characters
-        string path = "./input.txt"; 
+        string path = "./Day1/input.txt"; 
         string[] inputArray = File.ReadAllLines(path);
         
         for(int i = 0; i < inputArray.Length; i++)

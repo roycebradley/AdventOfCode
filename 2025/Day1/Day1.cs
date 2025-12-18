@@ -95,7 +95,7 @@ class Day1
     }
 
 
-    static void Main(string[] args)
+    static void Run(string[] args)
     {
         
         GetDoorCodePart1();

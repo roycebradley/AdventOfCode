@@ -102,22 +102,6 @@ class Day8
         //     Console.WriteLine(v);
         // }
 
-       // Console.Write(listOfDistances[0].box2);
-
-    //    var circuitSizes = new Dictionary<int, int>();
-    //     for (int i = 0; i < rootArray.Length; i++)
-    //     {
-    //         int root = Find(i, rootArray);
-    //         if (!circuitSizes.ContainsKey(root))
-    //             circuitSizes[root] = 0;
-    //         circuitSizes[root]++;
-    //     }
-
-    //     // Multiply the three largest sizes
-    //     var largestThree = circuitSizes.Values.OrderByDescending(x => x).Take(3).ToArray();
-    //     long result = (long)largestThree[0] * largestThree[1] * largestThree[2];
-    //     Console.WriteLine(result);
-    // 
     
         var circuitSizes = new Dictionary<long, long>();
 
@@ -137,7 +121,7 @@ class Day8
         var finalThree = circuitSizes
         .OrderByDescending(kv => kv.Value)
         .Take(3);
-        
+
         long finalVal = 1;
 
         foreach(var v in finalThree)
@@ -146,6 +130,105 @@ class Day8
         }
 
         Console.WriteLine(finalVal);
+    
+    }
+
+    // long FunctionThatReturnsTopCountOfDictionary()
+    // {
+    //     int root = Find(i, rootArray);
+            
+    //         if(!circuitSizes.ContainsKey(root))
+    //         {
+    //             circuitSizes[root] = 0;
+    //         }
+            
+    //         circuitSizes[root]++;
+
+    //     return;
+    // }
+
+
+    public static void ClosestJunctionBoxes2()
+    {
+        string[][] stringArray = GetInputFile();
+        var listOfDistances = GetJunctionBoxDistances();
+        int[] rootArray = new int[stringArray.Length];
+
+        for(int i=0; i < rootArray.Length; i++)
+        {
+            rootArray[i] = i;
+        }
+
+        //goal - create one big circuit with all boxes connected to the same root
+        //multiply the x values of the last two boxes that create the circuit
+
+        //go through the list of distances completly performing a union on anything that isn't already connected to the same root (union function may already check this)
+        //need a way to check if the circuit contains all boxes so we can end early if possible - we can use the dictionary to check if the top count equals the number of boxes from our input file
+
+        //------//
+
+        //init Dictionary
+
+        for(int i = 0; i < listOfDistances.Count; i++)
+        {
+            int box1 = listOfDistances[i].box1;
+            int box2 = listOfDistances[i].box2;
+            
+
+            if(Find(box1, rootArray) != Find(box2, rootArray))
+            {
+                Union(box1, box2, rootArray);
+                
+                var circuitSizes = new Dictionary<int, int>();
+
+                for(int y = 0; y < rootArray.Length; y++)
+                {
+                    int root = Find(y, rootArray);
+            
+                    if(!circuitSizes.ContainsKey(root))
+                    {
+                        circuitSizes[root] = 0;
+                    }
+            
+                    circuitSizes[root]++;
+                }
+                
+                int maxValueInDict = circuitSizes.Values.Max();
+
+                if(maxValueInDict == stringArray.Length)
+                {
+                    var maxKey = circuitSizes.OrderByDescending(kv => kv.Value).Take(1);
+
+                    foreach(var v in maxKey)
+                    {
+                        Console.WriteLine($"Max Key is {v.Key} and Value is {v.Value}");
+                    }
+                    Console.WriteLine("Everything is in 1 circuit!!!");
+                    Console.WriteLine($"Length of rootArray: {rootArray.Length} - Top Circuit Length {maxValueInDict} ");
+                    Console.WriteLine($"Final Union is: {box1} and {box2} ");
+                    Console.WriteLine($"i index is currently: {i} which is {listOfDistances[i]}");
+                    Console.WriteLine($"List of Distances Which Includes all Possible Connections Length {listOfDistances.Count}");
+                    Console.WriteLine($"Box 692 is {stringArray[692][0]}");
+                    Console.WriteLine($"Box 875 is {stringArray[875][0]}");
+                    Console.WriteLine($"X value of box1 is: {stringArray[listOfDistances[i].box1][0]}");
+                    Console.WriteLine($"X value of box2 is: {stringArray[listOfDistances[i].box2][0]}");
+                    Console.WriteLine($"Multiplied Together the Answer is: {long.Parse(stringArray[listOfDistances[i].box1][0]) * long.Parse(stringArray[listOfDistances[i].box2][0])}");
+
+                    // for(int y = 0; y < rootArray.Length; y++)
+                    // {
+                    //     Console.WriteLine($"Index: {y} Root is: {Find(y,rootArray)}");
+                    // }
+
+                    // for(int y = 0; y < listOfDistances.Count; y++)
+                    // {
+                    //     Console.WriteLine(listOfDistances[y]);
+                    // }
+                    // return;
+                    
+                }
+            }
+    
+        }
     
     }
 }
